@@ -5,4 +5,6 @@ class ApplicationController < ActionController::API
     $out = crypto.clearsign params[:text]
     render json: {:text => params[:text], :signed => $out.to_s}, status: :created
   end
+
+  # TODO add verify, encryption, and descryption support here
 end
