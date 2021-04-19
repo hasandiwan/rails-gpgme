@@ -12,10 +12,20 @@ class ApplicationController < ActionController::API
     $valid = false
     $crypto = GPGME::Crypto.new
     $crypto.verify($crypto.sign $text)  do |signature|
-      #render json: {:verified => signature.valid? }, status: 201
       $vald = signature.valid?
     end
     render json: {:verified => $vald }, status: 201
   end
-  # TODO add encryption, and descryption support here
+  
+  def encrypt
+    $text = params[:text]
+    $key = params[:key]
+
+    GPGME::Key.import($key)
+    $crypto = GPGME::Crypto.new :always_trust => true
+    render json: {encrypted: => $crypto, plain: => $text}
+  end
+
+  # TODO add decryption
+  
 end
